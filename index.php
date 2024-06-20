@@ -1,127 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car EMI Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
-
-        *,
         body {
             font-family: 'Poppins', sans-serif;
-            font-weight: 400;
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        html,
-        body {
-            height: 100%;
-            background-color: whitesmoke;
-            overflow: hidden;
+            background-color: #f0f0f0;
+            padding: 20px;
         }
 
         .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+        }
+
+        form {
             display: flex;
             flex-direction: column;
-            justify-content: center !important;
-            align-items: center;
-            text-align: center;
-            min-height: 100vh;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         .error-message {
             color: red;
-            font-size: 0.9em;
+            font-size: 1em;
+            height: 1.5em;
+            font-weight: bolder;
+        }
+
+        input[type="reset"],
+        input[type="submit"] {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="reset"]:hover,
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .req {
+            color: #f00;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
+        <h1>Car EMI Calculator</h1>
         <form id="emiCalculatorForm" method="post" action="CarEMICalculator.php">
-            <table>
-                <tr>
-                    <td><label for="down_payment">Down Payment</label></td>
-                    <td>
-                        <input type="text" id="down_payment" name="down_payment" placeholder="Down Payment">
-                        <span id="down_payment_error" class="error-message"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="salary">Current Salary</label></td>
-                    <td>
-                        <input type="text" id="salary" name="salary" placeholder="Current Salary">
-                        <span id="salary_error" class="error-message"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="max_monthly_payment">Maximum Monthly Payment</label></td>
-                    <td>
-                        <input type="text" id="max_monthly_payment" name="max_monthly_payment" placeholder="Maximum Monthly Payment">
-                        <span id="max_monthly_payment_error" class="error-message"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="loan_term">Length of Loan Term (Months)</label></td>
-                    <td>
-                        <input type="text" id="loan_term" name="loan_term" placeholder="Loan Term">
-                        <span id="loan_term_error" class="error-message"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="interest_rate">Loan Interest Rate (%)</label></td>
-                    <td>
-                        <input type="text" id="interest_rate" name="interest_rate" placeholder="Interest Rate">
-                        <span id="interest_rate_error" class="error-message"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="reset" id="resetButton" value="Reset"></td>
-                    <td><input type="submit" value="Calculate"></td>
-                </tr>
-            </table>
+            <label for="down_payment">Down Payment<span class="req">*</span></label>
+            <input type="text" id="down_payment" name="down_payment" placeholder="Enter down payment amount">
+            <span id="down_payment_error" class="error-message"></span>
+
+            <label for="salary">Current Salary<span class="req">*</span></label>
+            <input type="text" id="salary" name="salary" placeholder="Enter your monthly salary">
+            <span id="salary_error" class="error-message"></span>
+
+            <label for="max_monthly_payment">Maximum Monthly Payment<span class="req">*</span></label>
+            <input type="text" id="max_monthly_payment" name="max_monthly_payment" placeholder="Set maximum monthly payment">
+            <span id="max_monthly_payment_error" class="error-message"></span>
+
+            <label for="loan_term">Length of Loan Term (Months)<span class="req">*</span></label>
+            <input type="text" id="loan_term" name="loan_term" placeholder="Enter loan term in months">
+            <span id="loan_term_error" class="error-message"></span>
+
+            <label for="interest_rate">Loan Interest Rate (%)<span class="req">*</span></label>
+            <input type="text" id="interest_rate" name="interest_rate" placeholder="Enter loan interest rate">
+            <span id="interest_rate_error" class="error-message"></span>
+
+            <input type="reset" id="resetButton" value="Reset">
+            <input type="submit" value="Calculate">
         </form>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Validate on blur event
-            $('#down_payment').blur(function () {
-                validateDownPayment();
-            }).on('input', function () {
+        $(document).ready(function() {
+            // Validate on blur event and remove error message on valid input
+            $('#down_payment').on('input', function() {
                 validateDownPayment();
             });
 
-            $('#salary').blur(function () {
-                validateSalary();
-            }).on('input', function () {
+            $('#salary').on('input', function() {
                 validateSalary();
             });
 
-            $('#max_monthly_payment').blur(function () {
-                validateMaxMonthlyPayment();
-            }).on('input', function () {
+            $('#max_monthly_payment').on('input', function() {
                 validateMaxMonthlyPayment();
             });
 
-            $('#loan_term').blur(function () {
-                validateLoanTerm();
-            }).on('input', function () {
+            $('#loan_term').on('input', function() {
                 validateLoanTerm();
             });
 
-            $('#interest_rate').blur(function () {
+            $('#interest_rate').on('input', function() {
                 validateInterestRate();
-            }).on('input', function () {
-                validateInterestRate();
+            });
+
+            // Remove error messages on click outside of inputs
+            $('body').click(function(event) {
+                if (!$(event.target).closest('form').length) {
+                    $('.error-message').text('');
+                }
             });
 
             // Validate form on submit
-            $('#emiCalculatorForm').submit(function (e) {
+            $('#emiCalculatorForm').submit(function(e) {
                 e.preventDefault(); // Prevent form submission
 
                 // Clear previous error messages
@@ -143,13 +165,13 @@
             });
 
             // Reset button event listener
-            $('#resetButton').click(function () {
+            $('#resetButton').click(function() {
                 $('.error-message').text(''); // Clear error messages
             });
 
             function validateDownPayment() {
                 var downPayment = $('#down_payment').val();
-                if (downPayment == '' || isNaN(downPayment) || downPayment < 0) {
+                if (downPayment === '' || isNaN(downPayment) || downPayment < 0) {
                     $('#down_payment_error').text('Please enter a valid down payment (minimum 0).');
                     return false;
                 }
@@ -159,7 +181,7 @@
 
             function validateSalary() {
                 var salary = $('#salary').val();
-                if (salary == '' || isNaN(salary) || salary <= 0) {
+                if (salary === '' || isNaN(salary) || salary <= 0) {
                     $('#salary_error').text('Please enter a valid current salary (minimum 0).');
                     return false;
                 }
@@ -170,7 +192,7 @@
             function validateMaxMonthlyPayment() {
                 var maxMonthlyPayment = $('#max_monthly_payment').val();
                 var salary = $('#salary').val();
-                if (maxMonthlyPayment == '' || isNaN(maxMonthlyPayment) || maxMonthlyPayment <= 0) {
+                if (maxMonthlyPayment === '' || isNaN(maxMonthlyPayment) || maxMonthlyPayment <= 0) {
                     $('#max_monthly_payment_error').text('Please enter a valid maximum monthly payment.');
                     return false;
                 } else if (salary > 0 && maxMonthlyPayment > salary * 0.10) {
@@ -183,8 +205,8 @@
 
             function validateLoanTerm() {
                 var loanTerm = $('#loan_term').val();
-                if (loanTerm == '' || isNaN(loanTerm) || loanTerm < 36 || loanTerm > 60) {
-                    $('#loan_term_error').text('Please enter a valid loan term (36 to 60 months).');
+                if (loanTerm === '' || isNaN(loanTerm) || loanTerm < 36 || loanTerm > 60) {
+                    $('#loan_term_error').text('Please enter a valid loan term (between 36 and 60 months).');
                     return false;
                 }
                 $('#loan_term_error').text('');
@@ -193,8 +215,8 @@
 
             function validateInterestRate() {
                 var interestRate = $('#interest_rate').val();
-                if (interestRate == '' || isNaN(interestRate) || interestRate < 0 || interestRate > 12) {
-                    $('#interest_rate_error').text('Please enter a valid interest rate (0 to 12%).');
+                if (interestRate === '' || isNaN(interestRate) || interestRate < 0 || interestRate > 12) {
+                    $('#interest_rate_error').text('Please enter a valid interest rate (between 0 and 12%).');
                     return false;
                 }
                 $('#interest_rate_error').text('');

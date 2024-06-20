@@ -23,72 +23,64 @@
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center !important;
-            align-items: center;
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
             text-align: center;
-            min-height: 100vh;
+            color: #333;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <center>
-            <table class="table">
-                <tr>
-                    <td>
-                        <?php
 
-                            // Retrieve form inputs
-                            $downPayment = floatval($_POST['down_payment']);
-                            $salary = floatval($_POST['salary']);
-                            $maxMonthlyPayment = floatval($_POST['max_monthly_payment']);
-                            $loanTerm = intval($_POST['loan_term']);
-                            $interestRate = floatval($_POST['interest_rate']);
+    <?php
 
-                            // Calculate maximum allowable EMI as 10% of salary
-                            $maxAllowableEMI = $salary * 0.10;
+    // Retrieve form inputs
+    $downPayment = floatval($_POST['down_payment']);
+    $salary = floatval($_POST['salary']);
+    $maxMonthlyPayment = floatval($_POST['max_monthly_payment']);
+    $loanTerm = intval($_POST['loan_term']);
+    $interestRate = floatval($_POST['interest_rate']);
 
-                            if ($maxMonthlyPayment > $maxAllowableEMI) {
-                                $maxMonthlyPayment = $maxAllowableEMI;
-                            }
+    // Calculate maximum allowable EMI as 10% of salary
+    $maxAllowableEMI = $salary * 0.10;
 
-                            // Convert annual interest rate to monthly and percentage to decimal
-                            $monthlyInterestRate = ($interestRate / 100) / 12;
+    if ($maxMonthlyPayment > $maxAllowableEMI) {
+        $maxMonthlyPayment = $maxAllowableEMI;
+    }
 
-                            // Calculate maximum loan achievable
-                            if ($monthlyInterestRate > 0) {
-                                $maxLoan = ($maxMonthlyPayment * (pow(1 + $monthlyInterestRate, $loanTerm) - 1)) / ($monthlyInterestRate * pow(1 + $monthlyInterestRate, $loanTerm));
-                            } else {
-                                // If interest rate is 0%, the formula simplifies to:
-                                $maxLoan = $maxMonthlyPayment * $loanTerm;
-                            }
+    // Convert annual interest rate to monthly and percentage to decimal
+    $monthlyInterestRate = ($interestRate / 100) / 12;
 
-                            // Add down payment to maximum loan achievable
-                            $totalLoan = $maxLoan + $downPayment;
+    // Calculate maximum loan achievable
+    if ($monthlyInterestRate > 0) {
+        $maxLoan = ($maxMonthlyPayment * (pow(1 + $monthlyInterestRate, $loanTerm) - 1)) / ($monthlyInterestRate * pow(1 + $monthlyInterestRate, $loanTerm));
+    } else {
+        // If interest rate is 0%, the formula simplifies to:
+        $maxLoan = $maxMonthlyPayment * $loanTerm;
+    }
 
-                            // Display the result
-                            echo "<div class='container'>";
-                            echo "<h2>Car Loan Affordability Result</h2>";
-                            echo "<p>Based on your inputs, the maximum loan achievable is: <strong>₹" . number_format($totalLoan, 2) . "</strong></p>";
-                            echo "<a href='index.php' class='btn btn-primary'>Go Back</a>";
-                            echo "</div>";
+    // Add down payment to maximum loan achievable
+    $totalLoan = $maxLoan + $downPayment;
 
-                        ?>
+    // Display the result
+    echo "<div class='container'>";
+    echo "<h2>Car Loan Affordability Result</h2>";
+    echo "<p>Based on your inputs, the maximum loan achievable is: <strong>₹" . number_format($totalLoan, 2) . "</strong></p>";
+    echo "<a href='index.php' class='btn btn-primary'>Go Back</a>";
+    echo "</div>";
 
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="/carEMI/" class="btn btn-warning">Return Home</a>
-                    </td>
-                </tr>
-            </table>
-        </center>
-    </div>
+    ?>
 
 </body>
 
